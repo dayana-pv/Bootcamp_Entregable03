@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: API Customers
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: URL Local
+paths:
+  /api/customers/{id}:
+    get:
+      tags:
+        - Crontroller Customer
+      operationId: findCustomerId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Customer'
+    put:
+      tags:
+        - Crontroller Customer
+      operationId: updateCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - Crontroller Customer
+      operationId: deleteCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+  /api/customers:
+    get:
+      tags:
+        - Crontroller Customer
+      operationId: listCustomers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+        - Crontroller Customer
+      operationId: registerCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    CustomerRequest:
+      required:
+        - dni
+        - email
+        - lastName
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        dni:
+          type: string
+        email:
+          type: string
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        dni:
+          type: string
+        email:
+          type: string

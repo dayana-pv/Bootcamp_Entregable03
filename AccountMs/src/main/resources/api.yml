@@ -1,0 +1,190 @@
+openapi: 3.0.1
+info:
+  title: API Accounts
+  version: v0
+servers:
+  - url: http://localhost:8090
+    description: URL Local
+paths:
+  /api/accounts/{id}/remove:
+    put:
+      tags:
+        - Crontroller Account
+      operationId: removeBalance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts/{id}/deposit:
+    put:
+      tags:
+        - Crontroller Account
+      operationId: depositBalance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts:
+    get:
+      tags:
+        - Crontroller Account
+      operationId: listAccounts
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    post:
+      tags:
+        - Crontroller Account
+      operationId: registerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts/id/{id}:
+    get:
+      tags:
+        - Crontroller Account
+      operationId: getAccountById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts/customer/{customerId}:
+    get:
+      tags:
+        - Crontroller Account
+      operationId: getAccountsByCustomerId
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+  /api/accounts/{id}:
+    delete:
+      tags:
+        - Crontroller Account
+      operationId: deleteAccount
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+components:
+  schemas:
+    BalanceRequest:
+      required:
+        - balance
+      type: object
+      properties:
+        balance:
+          type: number
+          format: double
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        accountNumber:
+          type: string
+        balance:
+          type: number
+          format: double
+        accountType:
+          type: string
+          enum:
+            - AHORROS
+            - CORRIENTE
+        customerId:
+          type: integer
+          format: int64
+    AccountRequest:
+      required:
+        - customerId
+      type: object
+      properties:
+        accountType:
+          type: string
+          enum:
+            - AHORROS
+            - CORRIENTE
+        customerId:
+          type: integer
+          format: int64
