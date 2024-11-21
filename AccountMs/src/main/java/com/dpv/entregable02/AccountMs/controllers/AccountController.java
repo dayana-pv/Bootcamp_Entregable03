@@ -5,6 +5,7 @@ import com.dpv.entregable02.AccountMs.dto.AccountRequest;
 import com.dpv.entregable02.AccountMs.dto.BalanceRequest;
 import com.dpv.entregable02.AccountMs.services.AccountService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,13 +38,13 @@ public class AccountController {
     }
 
     @PutMapping("/{id}/deposit")
-    public Account depositBalance(@PathVariable Long id, @RequestBody @Valid BalanceRequest balanceRequest) {
-        return accountService.depositBalance(id, balanceRequest);
+    public Account depositBalance(@PathVariable Long id, @RequestBody @Valid @NotNull Double amount) {
+        return accountService.depositBalance(id, amount);
     }
 
     @PutMapping("/{id}/remove")
-    public Account removeBalance(@PathVariable Long id, @RequestBody @Valid BalanceRequest balanceRequest) {
-        return accountService.removeBalance(id, balanceRequest);
+    public Account removeBalance(@PathVariable Long id, @RequestBody @Valid @NotNull Double amount) {
+        return accountService.removeBalance(id, amount);
     }
 
     @DeleteMapping("/{id}")

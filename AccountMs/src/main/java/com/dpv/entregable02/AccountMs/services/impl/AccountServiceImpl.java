@@ -53,14 +53,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account depositBalance(Long id, BalanceRequest balanceRequest) {
+    public Account depositBalance(Long id, Double amount) {
         Optional<Account> account = accountRepository.findById(id);
 
         if(account.isEmpty()) {
             throw new RuntimeException("La cuenta no existe");
         }
 
-        Double newBalance = account.get().getBalance() + balanceRequest.getBalance();
+        Double newBalance = account.get().getBalance() + amount;
         account.get().setBalance(newBalance);
 
         accountRepository.save(account.get());
@@ -69,20 +69,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account removeBalance(Long id, BalanceRequest balanceRequest) {
+    public Account removeBalance(Long id, Double amount) {
         Optional<Account> account = accountRepository.findById(id);
 
         if(account.isEmpty()) {
             throw new RuntimeException("La cuenta no existe");
         }
 
-        Double newBalance = account.get().getBalance() - balanceRequest.getBalance();
+        Double newBalance = account.get().getBalance() - amount;
 
-        if (account.get().getAccountType().equals(AccountType.AHORROS) && newBalance < 0) {
+        if (newBalance < 0) {
             throw new RuntimeException("No tiene suficiente saldo para realizar el retiro.");
-        }
-        if (account.get().getAccountType().equals(AccountType.CORRIENTE) && newBalance < -500.00) {
-            throw new RuntimeException("No puede retirar más allá de su límite de sobregiro.");
         }
 
         // Si pasa las verificaciones, actualizar el saldo

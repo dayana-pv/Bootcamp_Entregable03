@@ -11,7 +11,7 @@ public interface AccountService {
     public List<Account> listAccounts();
     public Account getAccountById(Long id);
     public List<Account> getAccountsByCustomerId(Long customerId);
-    public Account depositBalance(Long id, BalanceRequest balanceRequest);
-    public Account removeBalance(Long id, BalanceRequest balanceRequest);
+    public Account depositBalance(Long id, Double amount);
+    public Account removeBalance(Long id, Double amount);
     public boolean deleteAccount(Long id);
 }

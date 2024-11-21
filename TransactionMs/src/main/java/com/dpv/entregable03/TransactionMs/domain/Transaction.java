@@ -1,32 +1,35 @@
 package com.dpv.entregable03.TransactionMs.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "transactions")
+@Document(collection = "transactions")
 public class Transaction {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    private String type;
+    private TransactionType transactionType;
 
     private Double amount;
 
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
+    private LocalDateTime date;
 
-    private String date;
+    private Long originAccount;
 
-    private String account;
+    private Long destinyAccount;
 
-    @Column(name = "id_account")
-    private Long accountId;
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

@@ -1,21 +1,22 @@
 package com.dpv.entregable03.TransactionMs.dto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
-
+@AllArgsConstructor
 public class TransactionRequest {
-    private String type;
 
+    @NotNull
     private Double amount;
 
-    private String date;
+    @NotNull
+    private Long originAccount;
 
-    private String account;
 }
 
 
