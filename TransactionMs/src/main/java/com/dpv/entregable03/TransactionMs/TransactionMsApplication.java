@@ -2,11 +2,10 @@ package com.dpv.entregable03.TransactionMs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-@EnableFeignClients
+
 @SpringBootApplication
 @EnableReactiveMongoAuditing
 @EnableReactiveMongoRepositories(basePackages = "com.dpv.entregable03.TransactionMs.repositories")

@@ -1,31 +1,31 @@
 package com.dpv.entregable03.TransactionMs.services.impl;
 
-import com.dpv.entregable03.TransactionMs.client.AccountClient;
 import com.dpv.entregable03.TransactionMs.domain.Transaction;
 import com.dpv.entregable03.TransactionMs.domain.TransactionType;
 import com.dpv.entregable03.TransactionMs.dto.TransactionRequest;
 import com.dpv.entregable03.TransactionMs.dto.TransferRequest;
 import com.dpv.entregable03.TransactionMs.repositories.TransactionRepository;
 import com.dpv.entregable03.TransactionMs.services.TransactionService;
+import com.dpv.entregable03.TransactionMs.webclient.Account;
+import com.dpv.entregable03.TransactionMs.webclient.AccountWebClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final AccountClient accountClient;
+    private final AccountWebClient accountWebClient;
 
     @Override
     public Mono<Transaction> registerDeposit(TransactionRequest transactionRequest) {
 
-        //accountClient.depositBalance(transactionRequest.getOriginAccount(), transactionRequest.getAmount());
+        Mono<Account> accountUpdate = accountWebClient.depositBalanceAccount(transactionRequest.getOriginAccount(), transactionRequest.getAmount());
 
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.DEPOSITO)
@@ -34,13 +34,14 @@ public class TransactionServiceImpl implements TransactionService {
                 .originAccount(transactionRequest.getOriginAccount())
                 .build();
 
-        return transactionRepository.save(transaction);
+        //return transactionRepository.save(transaction);
+        return accountUpdate.flatMap(account -> transactionRepository.save(transaction));
     }
 
     @Override
     public Mono<Transaction> registerWithdrawal(TransactionRequest transactionRequest) {
 
-        //accountClient.removeBalance(transactionRequest.getOriginAccount(), transactionRequest.getAmount());
+        Mono<Account> accountUpdate = accountWebClient.removeBalanceAccount(transactionRequest.getOriginAccount(), transactionRequest.getAmount());
 
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.RETIRO)
@@ -49,14 +50,15 @@ public class TransactionServiceImpl implements TransactionService {
                 .originAccount(transactionRequest.getOriginAccount())
                 .build();
 
-        return transactionRepository.save(transaction);
+        //return transactionRepository.save(transaction);
+        return accountUpdate.flatMap(account -> transactionRepository.save(transaction));
     }
 
     @Override
     public Mono<Transaction> registerTransfer(TransferRequest transferRequest) {
 
-        //accountClient.removeBalance(transferRequest.getOriginAccount(), transferRequest.getAmount());
-        //accountClient.depositBalance(transferRequest.getOriginAccount(), transferRequest.getAmount());
+        Mono<Account> removeBalance = accountWebClient.removeBalanceAccount(transferRequest.getOriginAccount(), transferRequest.getAmount());
+        Mono<Account> depositBalance = removeBalance.flatMap(account -> accountWebClient.depositBalanceAccount(transferRequest.getDestinyAccount(), transferRequest.getAmount()));
 
         Transaction transaction = Transaction.builder()
                 .transactionType(TransactionType.TRANSFERENCIA)
@@ -66,7 +68,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .destinyAccount(transferRequest.getDestinyAccount())
                 .build();
 
-        return transactionRepository.save(transaction);
+        //return transactionRepository.save(transaction);
+        return depositBalance.flatMap(account -> transactionRepository.save(transaction));
     }
 
     @Override

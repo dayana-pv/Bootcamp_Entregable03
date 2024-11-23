@@ -1,0 +1,130 @@
+openapi: 3.0.1
+info:
+  title: API Transaction
+  version: v0
+servers:
+  - url: http://localhost:8085
+    description: URL Local
+paths:
+  /api/transactions/withdrawal:
+    post:
+      tags:
+        - Controller Transaction
+      operationId: registerWithdrawal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /api/transactions/transfer:
+    post:
+      tags:
+        - Controller Transaction
+      operationId: registerTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /api/transactions/deposit:
+    post:
+      tags:
+        - Controller Transaction
+      operationId: registerDeposit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /api/transactions/history:
+    get:
+      tags:
+        - Controller Transaction
+      operationId: listTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    TransactionRequest:
+      required:
+        - amount
+        - originAccount
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        originAccount:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        transactionType:
+          type: string
+          enum:
+            - DEPOSITO
+            - RETIRO
+            - TRANSFERENCIA
+        amount:
+          type: number
+          format: double
+        date:
+          type: string
+          format: date-time
+        originAccount:
+          type: string
+        destinyAccount:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    TransferRequest:
+      required:
+        - amount
+        - destinyAccount
+        - originAccount
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        originAccount:
+          type: string
+        destinyAccount:
+          type: string

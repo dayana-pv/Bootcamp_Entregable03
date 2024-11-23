@@ -42,9 +42,19 @@ public class AccountController {
         return accountService.depositBalance(id, amount);
     }
 
+    @PutMapping("/{account}/depositAccount")
+    public Account depositBalanceAccount(@PathVariable String account, @RequestBody @Valid @NotNull Double amount) {
+        return accountService.depositBalanceAccount(account, amount);
+    }
+
     @PutMapping("/{id}/remove")
     public Account removeBalance(@PathVariable Long id, @RequestBody @Valid @NotNull Double amount) {
         return accountService.removeBalance(id, amount);
+    }
+
+    @PutMapping("/{account}/removeAccount")
+    public Account removeBalanceAccount(@PathVariable String account, @RequestBody @Valid @NotNull Double amount) {
+        return accountService.removeBalanceAccount(account, amount);
     }
 
     @DeleteMapping("/{id}")

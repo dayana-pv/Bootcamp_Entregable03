@@ -15,7 +15,7 @@ public class TransactionRequest {
     private Double amount;
 
     @NotNull
-    private Long originAccount;
+    private String originAccount;
 
 }
 

@@ -1,4 +1,4 @@
-package com.dpv.entregable03.TransactionMs.client;
+package com.dpv.entregable03.TransactionMs.webclient;
 
 public class Account {
     private Long id;

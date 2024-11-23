@@ -22,7 +22,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BalanceRequest'
+              type: number
+              format: double
         required: true
       responses:
         '200':
@@ -47,7 +48,58 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BalanceRequest'
+              type: number
+              format: double
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts/{account}/removeAccount:
+    put:
+      tags:
+        - Crontroller Account
+      operationId: removeBalanceAccount
+      parameters:
+        - name: account
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: number
+              format: double
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /api/accounts/{account}/depositAccount:
+    put:
+      tags:
+        - Crontroller Account
+      operationId: depositBalanceAccount
+      parameters:
+        - name: account
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: number
+              format: double
         required: true
       responses:
         '200':
@@ -148,14 +200,6 @@ paths:
                 type: boolean
 components:
   schemas:
-    BalanceRequest:
-      required:
-        - balance
-      type: object
-      properties:
-        balance:
-          type: number
-          format: double
     Account:
       type: object
       properties:

@@ -23,9 +23,9 @@ public class Transaction {
 
     private LocalDateTime date;
 
-    private Long originAccount;
+    private String originAccount;
 
-    private Long destinyAccount;
+    private String destinyAccount;
 
     @CreatedDate
     private LocalDateTime createdAt;

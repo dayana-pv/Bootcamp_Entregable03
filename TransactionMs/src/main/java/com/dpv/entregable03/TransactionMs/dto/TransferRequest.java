@@ -11,9 +11,9 @@ import lombok.Setter;
 public class TransferRequest extends TransactionRequest {
 
     @NotNull
-    private Long destinyAccount;
+    private String destinyAccount;
 
-    public TransferRequest(Double amount, Long originAccount, Long destinyAccount){
+    public TransferRequest(Double amount, String originAccount, String destinyAccount){
         super(amount, originAccount);
         this.destinyAccount = destinyAccount;
     }
